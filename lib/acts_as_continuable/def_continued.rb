@@ -1,5 +1,11 @@
 module ActsAsContinuable
   module DefContinued
+    
+    # Define an action that uses continuations.
+    # [+name+]    The name of the method as a symbol
+    # [+block+]   A block defining the action. It is executed in the context
+    #             of a wrapper that passes method calls to current controller
+    #             instance
     def def_continued(name, &block)
       wrapper_lambda = lambda do
         session[:contexts] ||= {}
