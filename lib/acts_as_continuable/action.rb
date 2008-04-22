@@ -32,9 +32,15 @@ module ActsAsContinuable
       thread[:controller] = controller
       thread[:entrance] = @entrances[entrance_idx] if entrance_idx < @entrances.length && entrance_idx > -1
       thread[:context_id] = context_id
+      thread[:deferred_methods] = []
 
       thread.run                     # reenter thread at Wrapper#continue
       Thread.pass until thread.stop? # wait for thread
+      
+      thread[:deferred_methods].each do |m_array|
+        controller.send(m_array[0], *m_array[1], &m_array[2])
+      end
+      thread[:deferred_methods] = nil
 
       if thread.alive?
         # kill all entrances to our alternate future
