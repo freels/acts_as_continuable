@@ -1,0 +1,64 @@
+# acts\_as\_continuable #
+
+by Matt Freels
+http://matt.freels.name
+
+Continuations in your ActionController actions.
+
+
+## Requirements ##
+
+Since it uses Continuations and callcc, it will only run on MRI. Sorry, no JRuby or IronRuby. Additionally, you need to set the session store to use memory. Add this line to environment.rb
+
+    config.action_controller.session_store = :memory_store
+
+
+## Description ##
+
+This plugin for Rails allows you to declare actions in your controllers that look like this:
+
+    def_continued :my_method
+      render :partial => 'form_part_1'
+      continue
+  
+      render :partial => 'form_part_2'
+      continue
+  
+      render :partial => 'form_part_3'
+    end
+
+To use it, `include ActsAsContinuable` in your controller class
+
+When you call `continue`, your action execution is paused and stored in the session to return to later. This allows you to handle multiple request/response cycles within a single action. The back button works as well as long as action execution hasn't actually completed. The action will rewind execution to the appropriate point.
+
+within your view, an instance variable `@context_id` is available. In order to call back into the action, pass `@context_id` back as the GET or POST parameter `:context_id` within your view: e.g.:
+
+    <%= link_to :action => 'my_method', :context_id => @context_id %>
+
+
+## Wha?? ##
+
+Questions, comments, and patches? Contact me at *first name*@*last name*.name
+
+
+## License ##
+
+acts\_as\_continuable is Copyright (c) 2008 Matt Freels and is released under the following license:
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
