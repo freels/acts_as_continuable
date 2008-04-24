@@ -33,6 +33,11 @@ within your view, an instance variable <tt>@context_id</tt> is available. In ord
     <%= link_to :action => 'my_method', :context_id => @context_id %>
 
 
+== Issues
+
+Currently when you try to shut down mongrel, it waits for the backing threads stored in the session to exit. They are, of course paused, so mongrel waits a minute before killing them.
+
+
 == Wha??
 
 Questions, comments, and patches about/for this arm-twisting of an experiment for Rails? Contact me at <em>firstname</em>@<em>lastname</em>.name

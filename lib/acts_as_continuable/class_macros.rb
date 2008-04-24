@@ -1,5 +1,5 @@
 module ActsAsContinuable
-  module DefContinued
+  module ClassMacros
     
     # Define an action that uses continuations.
     # [+name+]    The name of the method as a symbol
